@@ -94,7 +94,7 @@ class dbstuff(commands.Cog):
     @commands.command(aliases=['erase'], hidden=True)
     async def purge(self, ctx, num=2):
         'Admin delete'
-        if ctx.author.id == 790459205038506055:
+        if ctx.author.id == self.client.owner_id:
             await ctx.channel.purge(limit=num+1)
         else:
             if ctx.author.id == 793433316258480128:
