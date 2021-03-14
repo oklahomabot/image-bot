@@ -79,7 +79,7 @@ class dbstuff(commands.Cog):
         fields = [("Name - prefix", f'{self.client.user.name} - \"{self.client.command_prefix}\"', True),
                   (":trophy: Owner", owner_id, True),
                   ("SKYNET SECRET 🆔", self.client.user.id, False),
-                  (":sunglasses: Server Count", int(
+                  (":nerd: Server Count", int(
                       len(list(self.client.guilds))), True),
                   ('🦮Trolling ', f'{mh} members',
                    True), ("Favorite Cookbook", "Serving Humans", True),
