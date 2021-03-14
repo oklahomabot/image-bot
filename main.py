@@ -7,8 +7,10 @@ intents = discord.Intents.all()
 intents.members = True
 prefix = 'cc '
 
+load_dotenv()
+dTOKEN = os.getenv('dTOKEN')
 client = commands.Bot(command_prefix=prefix,
-                      intents=intents, owner_id=790459205038506055)
+                      intents=intents, owner_id=os.getenv('OwnerID'))
 
 # cog_list from all .py files in folder cogs
 cogs = [fn[:-3] for fn in os.listdir(os.path.join(
@@ -37,5 +39,5 @@ async def on_ready():
         type=discord.ActivityType.watching, name=f'for {prefix} command'))
     await list_guilds()
 
-load_dotenv()
-client.run(os.getenv('dTOKEN'))
+
+client.run(dTOKEN)

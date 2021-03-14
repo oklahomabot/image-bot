@@ -1,3 +1,4 @@
+import os
 import discord
 from discord.ext import commands
 import sqlite3
@@ -225,8 +226,8 @@ def exp_level(level=0):
 
 ''' SQLite3 Database Stuff '''
 # Creates connection to db in current directory
-conn = sqlite3.connect('cupcake.db')
-# Creates a cursor
+conn = sqlite3.connect(os.path.join(
+    "./", "cogs", "images", "data", 'images.db'))
 c = conn.cursor()
 
 
