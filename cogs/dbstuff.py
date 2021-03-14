@@ -1,8 +1,9 @@
 import os
 import discord
-from discord.ext import commands
 import sqlite3
+from discord.ext import commands
 from datetime import datetime, timezone
+from .images import pixabay_url_search
 
 
 class CCguild():
@@ -94,7 +95,7 @@ class dbstuff(commands.Cog):
     @commands.command(aliases=['erase'], hidden=True)
     async def purge(self, ctx, num=2):
         'Admin delete'
-        if ctx.author.id == 790459205038506055:
+        if ctx.author.id == self.client.owner_id:
             await ctx.channel.purge(limit=num+1)
         else:
             if ctx.author.id == 793433316258480128:
@@ -114,8 +115,8 @@ class dbstuff(commands.Cog):
         embed = discord.Embed(title=f"{self.client.user.display_name}\'s Servers", colour=discord.Colour(
             0xE5E242), description=temp_txt)
 
-        embed.set_image(
-            url="https://images.pexels.com/photos/461049/pexels-photo-461049.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260")
+        pic_url = await pixabay_url_search(ctx, 'servers')
+        embed.set_image(url=pic_url)
 
         embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
 

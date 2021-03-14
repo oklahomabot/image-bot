@@ -504,7 +504,7 @@ async def pixabay_url_search(ctx, search_by=None):
 
     url = 'https://pixabay.com/api/?'
     response = requests.get(url + urllib.parse.urlencode(getVars))
-    print(url + urllib.parse.urlencode(getVars))
+
     if response.status_code == 200:
         data = response.json()
         if len(data['hits']) > 0:
