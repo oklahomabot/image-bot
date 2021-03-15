@@ -113,13 +113,14 @@ class dbstuff(commands.Cog):
             temp_txt = temp_txt + \
                 f'**{index})** {guild.name}\n'
         embed = discord.Embed(title=f"{self.client.user.display_name}\'s Servers", colour=discord.Colour(
-            0xE5E242), description=temp_txt)
+            0xE5E242), description=temp_txt, timestamp=datetime.now(tz=timezone.utc))
 
         pic_url = await pixabay_url_search(ctx, 'servers')
         embed.set_image(url=pic_url)
 
-        embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-
+        embed.set_thumbnail(url=self.client.user.avatar_url)
+        embed.set_footer(
+            text=f'Requested by: {ctx.author.name}', icon_url=ctx.author.avatar_url)
         await ctx.send(embed=embed)
 
     @commands.command(aliases=['finduser', 'user', 'userinfo'], hidden=False)

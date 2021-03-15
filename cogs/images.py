@@ -13,6 +13,7 @@ from PIL import Image, ImageDraw
 from io import BytesIO
 from random import randint
 from dotenv import load_dotenv
+from datetime import datetime, timezone
 
 ''' SQLite3 Database Stuff '''
 # Creates connection to db in current directory
@@ -156,10 +157,12 @@ class images(commands.Cog):
 
         embed = discord.Embed(
             title=f"**{category}** Animu Image", colour=discord.Colour(0xE5E242),
-            description=f"image provided by [some-random-API.ml\'s API](https://some-random-API.ml/)")
+            description=f"image provided by [some-random-API.ml](https://some-random-API.ml/)",
+            timestamp=datetime.now(tz=timezone.utc))
         embed.set_image(url=response.json()['link'])
         embed.set_thumbnail(url=self.client.user.avatar_url_as(size=64))
-        embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+        embed.set_footer(
+            text=f'Requested by: {ctx.author.name}', icon_url=ctx.author.avatar_url)
         await ctx.send(embed=embed)
 
     @commands.command(aliases=['trigger', 'triggered', 'gay', 'glass', 'wasted'], hidden=False)
