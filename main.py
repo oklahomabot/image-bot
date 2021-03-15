@@ -10,7 +10,7 @@ prefix = 'cc '
 load_dotenv()
 dTOKEN = os.getenv('dTOKEN')
 client = commands.Bot(command_prefix=prefix,
-                      intents=intents, owner_id=os.getenv('OwnerID'))
+                      intents=intents, owner_id=int(os.getenv('OwnerID')))
 
 # cog_list from all .py files in folder cogs
 cogs = [fn[:-3] for fn in os.listdir(os.path.join(

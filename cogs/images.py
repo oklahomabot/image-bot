@@ -6,6 +6,8 @@ import sqlite3
 import discord
 import re
 from discord import user
+from discord import client
+from discord.ext.commands.core import is_owner
 import requests
 import urllib.parse
 from discord.ext import commands
@@ -45,6 +47,7 @@ class images(commands.Cog):
         my_info = await self.client.application_info()
         self.owner = my_info.owner
         new_editor(my_info.owner)
+        new_editor(self.client.user)
 
     @commands.Cog.listener()
     async def on_command_error(self, ctx, error):
@@ -98,8 +101,9 @@ class images(commands.Cog):
 
     @commands.command(aliases=['del_editor', 'deleditor'], hidden=True)
     @editor_only()
-    async def delete_editor(self, ctx, *, user):
+    async def delete_editor(self, ctx, *, user=None):
         '''(editor only) Remove a user from approved fun_image editor list '''
+
         if not user:
             await ctx.send(f'A user must be referenced to use this command')
             return
@@ -107,6 +111,12 @@ class images(commands.Cog):
             user = await commands.converter.MemberConverter().convert(ctx, user)
         except:
             await ctx.send(f"I couldn\'t find {user} on this server ... nothing has changed")
+            return
+
+        if user == self.owner or user == self.client.user:
+            await ctx.send(
+                (f'{self.owner.display_name} and I must remain on the editor list.\n') +
+                (f'I cannot do what you ask {ctx.author.display_name}.'))
             return
 
         remove_editor(user)
