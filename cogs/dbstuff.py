@@ -4,6 +4,7 @@ import sqlite3
 from discord.ext import commands
 from datetime import datetime, timezone
 from .images import pixabay_url_search
+from random import randint
 
 
 class CCguild():
@@ -58,7 +59,7 @@ class dbstuff(commands.Cog):
         save_user(tmpuser)
         # print(f'User {message.author.name} in guild {message.guild} sent a message')
 
-    @commands.command(aliases=['BI', 'bi', 'Bi', 'BOTINFO', 'BotInfo'])
+    @commands.command(aliases=['BOTINFO', 'BotInfo', 'bot_info', 'info'])
     async def botinfo(self, ctx):
 
         embed = discord.Embed(
@@ -76,13 +77,14 @@ class dbstuff(commands.Cog):
         except:
             owner_id = 'Not defined in commands.Bot.owner_id'
 
-        fields = [("Name - prefix", f'{self.client.user.name} - \"{self.client.command_prefix}\"', True),
+        secret_id = "".join([str(randint(0, 1)) for x in range(15)])
+        fields = [("Name - prefix", f'{self.client.user.name} - \"{self.client.command_prefix}\"', False),
                   (":trophy: Owner", owner_id, True),
-                  ("SKYNET SECRET 🆔", self.client.user.id, False),
-                  (":nerd: Server Count", int(
-                      len(list(self.client.guilds))), True),
-                  ('🦮Trolling ', f'{mh} members',
+                  ("SKYNET SECRET 🆔", secret_id, True),
+                  ('🦮Trolling ', f'{mh} users / {len(list(self.client.guilds))} servers',
                    True), ("Favorite Cookbook", "Serving Humans", True),
+                  ("⛭GitHub",
+                   "[GitHub LINK](https://github.com/oklahomabot/image-bot)", True),
                   ("📝Invite me", "[Click Here to Add Me](https://discord.com/api/oauth2/authorize?client_id=804002208302891079&permissions=2148002880&scope=bot)", True)]
 
         for name, value, inline in fields:
