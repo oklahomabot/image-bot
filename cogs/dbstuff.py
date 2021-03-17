@@ -164,27 +164,27 @@ class dbstuff(commands.Cog):
     async def top_points(self, ctx, how_many: int = 3):
         ''' 
         Reports in chat top exp earners on this server
-        A value of 1-10 may be used for how many users
+        A value of 1-20 may be used for how many users
         you want on the list
         '''
-        if (1 <= how_many <= 10):
-            tmp_str = ''
-            tmp_list = top_exp(ctx.guild.id, how_many)
+        if not (1 <= how_many <= 20):
+            await ctx.send(f'{how_many} invalid - Please use a number 1-20 or leave blank for top 3')
 
-            embed = discord.Embed(
-                title=f'TOP {len(tmp_list)} Users', description='(EXPERIENCE POINTS)', colour=discord.Colour.blue())
-            for user_data in tmp_list:
-                embed.add_field(
-                    name=f'{user_data[0][:17]}', value=f'EXP : **{user_data[1]}** LEVEL : {user_data[2]}')
-            embed.set_image(
-                url='https://images.pexels.com/photos/5731842/pexels-photo-5731842.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260')
+        embed = discord.Embed(
+            title=f'{ctx.guild.name}', description=f'EXP LEADERBOARD',
+            colour=discord.Colour.blue(), timestamp=datetime.now(tz=timezone.utc))
+        embed.set_thumbnail(url=ctx.guild.icon_url_as(size=128))
+        embed.set_footer(
+            text=f'Requested by: {ctx.author.name}', icon_url=ctx.author.avatar_url)
 
-            if ctx.message.author.avatar is not None:
-                embed.set_thumbnail(
-                    url=ctx.message.author.avatar_url_as(size=64))
-            await ctx.send(embed=embed)
-        else:
-            await ctx.send(f'{how_many} invalid - Please use a whole number 1-10 or leave blank for top 3')
+        tmp_list = top_exp(ctx.guild.id, how_many)
+        temp = ''
+        for index, user_data in enumerate(tmp_list):
+            temp = temp + ((f'**{index+1}) {user_data[0]:17}** ') +
+                           (f'EXP: {user_data[1]} LEVEL: {user_data[2]}\n'))
+        embed.add_field(name=f'TOP {len(tmp_list)} Users', value=temp)
+
+        await ctx.send(embed=embed)
 
     @commands.command(aliases=['num1', 'best'], hidden=False)
     async def number_one(self, ctx, *, person=None):
@@ -243,15 +243,14 @@ def top_exp(guildID=None, how_many: int = 3):
     ''' queries db and returns list username/point/level tuples '''
     if not guildID:
         return
-    if not(10 >= how_many >= 1):
-        how_many = 3
+
     with conn:
         c.execute(
             f"SELECT name, exp, explevel from users WHERE guildID={guildID}")
         result = c.fetchall()
         # sort by second element of tuple (exp)
         result.sort(key=lambda x: x[1], reverse=True)
-        # print(result)
+
         if len(result) <= how_many:
             return result
         else:
