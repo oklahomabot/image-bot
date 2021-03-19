@@ -262,7 +262,7 @@ class images(commands.Cog):
         img_list = [im1, im2]
         outfile = os.path.join(gif_folder, "slapmore.gif")
         img_list[0].save(outfile,
-                         save_all=True, append_images=img_list[1:], optimize=False, duration=delay, loop=0)
+                         save_all=True, append_images=img_list[1:], optimize=True, duration=delay, loop=0)
         file = (discord.File(outfile))
         await ctx.send(file=file)
 
